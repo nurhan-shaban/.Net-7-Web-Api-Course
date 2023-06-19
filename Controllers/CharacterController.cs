@@ -17,21 +17,32 @@ namespace Controllers
      }
      
      [HttpGet("GetAll")]
-       public async Task<ActionResult<ServiceResponse<List<Character>>>> Get()
+       public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get()
        {
             return Ok( await _charaterService.GetAllCharacters());
        }
 
        [HttpGet("{id}")]
-       public async Task<ActionResult<ServiceResponse<Character>>> GetSingle(int id)
+       public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id)
        {
             return Ok(await _charaterService.GetCharacterById(id));
        }
 
        [HttpPost]
-       public async Task<ActionResult<ServiceResponse<List<Character>>>> AddCharacter(Character character)
+       public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharatcterDto character)
        {
           return Ok(await _charaterService.AddCharatcter(character));
+       }
+
+       [HttpPut]
+       public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> UpdateCharacter(UpdateCharacterDto character)
+       {
+          var response = await _charaterService.UpdateCharatcter(character);
+          if(response.Data is null)
+          {
+               return NotFound(response);
+          }
+          return Ok(response);
        }
     }
 }

@@ -7,8 +7,9 @@ namespace Services
 {
     public interface ICharacterService
     {
-        Task<ServiceResponse<List<Character>>> GetAllCharacters();
-        Task<ServiceResponse<Character>> GetCharacterById(int id);
-        Task<ServiceResponse<List<Character>>> AddCharatcter(Character newChratacter);
+        Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
+        Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
+        Task<ServiceResponse<List<GetCharacterDto>>> AddCharatcter(AddCharatcterDto newChratacter);
+        Task<ServiceResponse<GetCharacterDto>> UpdateCharatcter(UpdateCharacterDto UpdateChratacter);
     }
 }
