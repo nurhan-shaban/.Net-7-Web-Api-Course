@@ -27,6 +27,30 @@ namespace Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacters(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try
+            {
+                var character = characters.FirstOrDefault(x => x.Id == id);
+                if(character is null)
+                {
+                    throw new Exception($"Character Id:{id} is not found");
+                }
+
+                characters.Remove(character);
+                serviceResponse.Data = characters.Select(x => _mapper.Map<GetCharacterDto>(x)).ToList();
+            }
+            catch(Exception e)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = e.Message;
+            }
+            
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -57,23 +81,20 @@ namespace Services
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
             try
             {
-                
+                var character = characters.FirstOrDefault(x => x.Id == updateCharacterDto.Id);
+                if(character is null)
+                {
+                    throw new Exception($"Character Id:{updateCharacterDto.Id} is not found");
+                }
 
-            var character = characters.FirstOrDefault(x => x.Id == updateCharacterDto.Id);
-            if(character is null)
-            {
-                throw new Exception($"Character Id:{updateCharacterDto.Id} is not found");
-            }
+                character.Name = updateCharacterDto.Name;
+                character.HitPoints = updateCharacterDto.HitPoints;
+                character.Strenght = updateCharacterDto.Strenght;
+                character.Defense = updateCharacterDto.Defense;
+                character.Intelligence = updateCharacterDto.Intelligence;
+                character.Class = updateCharacterDto.Class;
 
-
-            character.Name = updateCharacterDto.Name;
-            character.HitPoints = updateCharacterDto.HitPoints;
-            character.Strenght = updateCharacterDto.Strenght;
-            character.Defense = updateCharacterDto.Defense;
-            character.Intelligence = updateCharacterDto.Intelligence;
-            character.Class = updateCharacterDto.Class;
-
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
+                serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             }
             catch(Exception e)
             {
